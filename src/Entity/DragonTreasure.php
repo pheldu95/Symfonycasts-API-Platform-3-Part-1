@@ -17,8 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
     shortName: 'Treasure',
     description: 'a rare treasure',
     operations: [
-        new Get(uriTemplate: '/dragon-plunder/{id}'),
-        new GetCollection(uriTemplate: '/dragon-plunder'),
+        new Get(),
+        new GetCollection(),
         new Post(),
         new Put(),
         new Patch(),
