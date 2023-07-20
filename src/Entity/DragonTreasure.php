@@ -31,7 +31,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
     ],
     denormalizationContext: [
         'groups' => ['treasure:write']
-    ]
+    ],
+    paginationItemsPerPage: 10
 )]
 class DragonTreasure
 {
@@ -45,7 +46,7 @@ class DragonTreasure
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups('treasure:read')]
+    #[Groups(['treasure:read'])]
     private ?string $description = null;
 
     /**
@@ -88,12 +89,11 @@ class DragonTreasure
 
     public function setDescription(string $description): self
     {
-        $this->$description = $description;
-
+        $this->description = $description;
         return $this;
     }
 
-    #[Groups('treasure:write')]
+    #[Groups(['treasure:write'])]
     //control the name of the attribute/ here we will make it 'description' instead of the automatic texDescription name it is given
     #[SerializedName('description')]
     public function setTextDescription(string $description): static
@@ -142,7 +142,7 @@ class DragonTreasure
     /**
      * @return \DateTimeImmutable|null
      */
-    #[Groups('treasure:read')]
+    #[Groups(['treasure:read'])]
     public function getPlunderedAt(): ?\DateTimeImmutable
     {
         return $this->plunderedAt;
