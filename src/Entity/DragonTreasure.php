@@ -27,6 +27,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     normalizationContext: [
         'groups' => ['treasure:read']
+    ],
+    denormalizationContext: [
+        'groups' => ['treasure:write']
     ]
 )]
 class DragonTreasure
@@ -37,7 +40,7 @@ class DragonTreasure
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('treasure:read')]
+    #[Groups(['treasure:read', 'treasure:write'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -48,18 +51,18 @@ class DragonTreasure
      *The estimated value of the treasure, in gold coins
      */
     #[ORM\Column]
-    #[Groups('treasure:read')]
+    #[Groups(['treasure:read', 'treasure:write'])]
     private ?int $value = null;
 
     #[ORM\Column]
-    #[Groups('treasure:read')]
+    #[Groups(['treasure:read', 'treasure:write'])]
     private ?int $coolFactor = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $plunderedAt;
 
     #[ORM\Column]
-    private ?bool $isPublished = null;
+    private ?bool $isPublished = false;
 
     public function __construct()
     {
@@ -76,7 +79,7 @@ class DragonTreasure
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -88,6 +91,14 @@ class DragonTreasure
         return $this->description;
     }
 
+    public function setDescription(string $description): self
+    {
+        $this->$description = $description;
+
+        return $this;
+    }
+
+    #[Groups('treasure:write')]
     public function setTextDescription(string $description): static
     {
         $this->description = nl2br($description);
@@ -134,11 +145,18 @@ class DragonTreasure
     /**
      * @return \DateTimeImmutable|null
      */
+    #[Groups('treasure:read')]
     public function getPlunderedAt(): ?\DateTimeImmutable
     {
         return $this->plunderedAt;
     }
 
+    public function setPlunderedAt(\DateTimeImmutable $plunderedAt): self
+    {
+        $this->plunderedAt = $plunderedAt;
+
+        return $this;
+    }
     /**
      * A human-readable representation of when this treasure was plundered
      */
