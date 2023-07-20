@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\DragonTreasureRepository;
+use Carbon\Carbon;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -47,10 +48,15 @@ class DragonTreasure
     private ?int $coolFactor = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTimeImmutable $plunderedAt;
 
     #[ORM\Column]
     private ?bool $isPublished = null;
+
+    public function __construct()
+    {
+        $this->plunderedAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -74,9 +80,9 @@ class DragonTreasure
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setTextDescription(string $description): static
     {
-        $this->description = $description;
+        $this->description = nl2br($description);
 
         return $this;
     }
@@ -105,18 +111,6 @@ class DragonTreasure
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function getIsPublished(): ?bool
     {
         return $this->isPublished;
@@ -127,5 +121,21 @@ class DragonTreasure
         $this->isPublished = $isPublished;
 
         return $this;
+    }
+
+    /**
+     * @return \DateTimeImmutable|null
+     */
+    public function getPlunderedAt(): ?\DateTimeImmutable
+    {
+        return $this->plunderedAt;
+    }
+
+    /**
+     * A human-readable representation of when this treasure was plundered
+     */
+    public function getPlunderedAtAgo(): string
+    {
+        return Carbon::instance($this->plunderedAt)->diffForHumans();
     }
 }
