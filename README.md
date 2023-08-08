@@ -58,3 +58,8 @@ us do what we love!
 
 <3 Your friends at SymfonyCasts
 # Symfonycasts-API-Platform-3-Part-1
+
+Notes to self:
+to start docker -> systemctl start docker
+sudo docker compose up -d  <-- this starts the container for the project
+
