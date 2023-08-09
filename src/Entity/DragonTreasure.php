@@ -92,6 +92,11 @@ class DragonTreasure
     #[ApiFilter(BooleanFilter::class)]
     private ?bool $isPublished = false;
 
+    #[ORM\ManyToOne(inversedBy: 'dragonTreasures')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['treasure:read', 'treasure:write'])]
+    private ?User $owner = null;
+
     public function __construct(string $name = null)
     {
         $this->name = $name;
@@ -192,5 +197,17 @@ class DragonTreasure
     public function getPlunderedAtAgo(): string
     {
         return Carbon::instance($this->plunderedAt)->diffForHumans();
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
+
+        return $this;
     }
 }
