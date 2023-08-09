@@ -27,7 +27,11 @@ use function Symfony\Component\String\u;
     shortName: 'Treasure',
     description: 'a rare treasure',
     operations: [
-        new Get(),
+        new Get(
+            normalizationContext: [
+                'groups' => ['treasure:read', 'treasure:item:get'],
+            ],
+        ),
         new GetCollection(),
         new Post(),
         new Put(),
@@ -58,7 +62,7 @@ class DragonTreasure
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['treasure:read', 'treasure:write'])]
+    #[Groups(['treasure:read', 'treasure:write', 'user:read'])]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 50, maxMessage: 'Describe your loot in only 50 characters or less')]
@@ -74,7 +78,7 @@ class DragonTreasure
      *The estimated value of the treasure, in gold coins
      */
     #[ORM\Column]
-    #[Groups(['treasure:read', 'treasure:write'])]
+    #[Groups(['treasure:read', 'treasure:write', 'user:read'])]
     #[ApiFilter(RangeFilter::class)]
     #[Assert\GreaterThanOrEqual(0)]
     private ?int $value = 0;
