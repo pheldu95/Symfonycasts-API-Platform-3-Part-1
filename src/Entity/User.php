@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email address')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this user name')]
+#[ApiFilter(PropertyFilter::class)] //PropertyFilter::class adds option to just get selected properties when doing GET collection. like only $emails, for example
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

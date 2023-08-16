@@ -54,6 +54,7 @@ use function Symfony\Component\String\u;
 )]
 
 #[ApiFilter(PropertyFilter::class)]
+#[ApiFilter(SearchFilter::class, properties: ['owner.username'=>'partial'])]
 class DragonTreasure
 {
     #[ORM\Id]
@@ -100,6 +101,7 @@ class DragonTreasure
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['treasure:read', 'treasure:write'])]
     #[Assert\Valid]
+    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     private ?User $owner = null;
 
     public function __construct(string $name = null)
