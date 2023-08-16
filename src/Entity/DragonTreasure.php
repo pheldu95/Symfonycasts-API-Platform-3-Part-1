@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
@@ -53,6 +54,17 @@ use function Symfony\Component\String\u;
     paginationItemsPerPage: 10
 )]
 
+#[ApiResource(
+    uriTemplate: '/users/{user_id}/treasures.{_format}',
+    shortName: 'Treasure',
+    operations: [new GetCollection()],
+    uriVariables: [
+        'user_id' => new Link(
+            fromProperty: 'dragonTreasures',
+            fromClass: User::class
+        )
+    ]
+)]
 #[ApiFilter(PropertyFilter::class)]
 #[ApiFilter(SearchFilter::class, properties: ['owner.username'=>'partial'])]
 class DragonTreasure
