@@ -62,7 +62,7 @@ class DragonTreasure
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['treasure:read', 'treasure:write', 'user:read'])]
+    #[Groups(['treasure:read', 'treasure:write', 'user:read', 'user:write'])]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 50, maxMessage: 'Describe your loot in only 50 characters or less')]
@@ -78,7 +78,7 @@ class DragonTreasure
      *The estimated value of the treasure, in gold coins
      */
     #[ORM\Column]
-    #[Groups(['treasure:read', 'treasure:write', 'user:read'])]
+    #[Groups(['treasure:read', 'treasure:write', 'user:read', 'user:write'])]
     #[ApiFilter(RangeFilter::class)]
     #[Assert\GreaterThanOrEqual(0)]
     private ?int $value = 0;
@@ -135,7 +135,7 @@ class DragonTreasure
         return $this;
     }
 
-    #[Groups(['treasure:write'])]
+    #[Groups(['treasure:write', 'user:write'])]
     //control the name of the attribute/ here we will make it 'description' instead of the automatic texDescription name it is given
     #[SerializedName('description')]
     public function setTextDescription(string $description): static

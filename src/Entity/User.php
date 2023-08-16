@@ -50,8 +50,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank]
     private ?string $username = null;
 
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DragonTreasure::class)]
+    //cascade: ['persist'] means that if we are saving a user object, it should magically persist any dragon treasures inside
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DragonTreasure::class, cascade: ['persist'])]
     #[Groups(['user:read', 'user:write'])]
+    #[Assert\Valid]
     private Collection $dragonTreasures;
 
     public function __construct()
