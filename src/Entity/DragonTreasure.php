@@ -63,6 +63,9 @@ use function Symfony\Component\String\u;
             fromProperty: 'dragonTreasures',
             fromClass: User::class
         )
+    ],
+    normalizationContext: [
+        'groups' => ['treasure:read']
     ]
 )]
 #[ApiFilter(PropertyFilter::class)]
