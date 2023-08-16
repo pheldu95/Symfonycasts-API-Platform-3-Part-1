@@ -51,7 +51,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $username = null;
 
     //cascade: ['persist'] means that if we are saving a user object, it should magically persist any dragon treasures inside
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DragonTreasure::class, cascade: ['persist'])]
+    //orphanRemoval: true tells doctrine that if any of these treasures become "oprhaned", meaning no user id associated with them, then it will just delete them
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DragonTreasure::class, cascade: ['persist'], orphanRemoval: true)]
     #[Groups(['user:read', 'user:write'])]
     #[Assert\Valid]
     private Collection $dragonTreasures;
